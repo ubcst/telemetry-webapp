@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPF9BaQKpuWNYUgdpmDReZ-4MYfogX5io&sensor=true">
+    </script>
+    <script type="text/javascript">
+      var path;
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(42.329638,-83.049796),
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+
+        var pathCoords = [
+          {lat: 42.329638, lng: -83.049796},
+          {lat: 42.328496, lng: -83.048937}
+        ];
+        path = new google.maps.Polyline({
+          path: pathCoords,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        path.setMap(map);
+      }
+
+      var socket = io();
+      socket.on('test', function(data) {
+        var newpath = path.getPath();
+        newpath.push(new google.maps.LatLng(data.lat,data.lng));
+        path.setPath(newpath);
+        console.log(data);
+      });
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
