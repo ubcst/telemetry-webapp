@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 app.use( bodyParser.json() );
 
 app.get('/', function (req, res) {
-  res.sendfile('index1.html');
+  res.sendfile('index.html');
 });
 
 http.listen(3000, function () {
