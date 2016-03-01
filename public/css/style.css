@@ -8,12 +8,22 @@ body {
 	padding: 0 
 }
 
+#container {
+	height: 100%;
+}
+
 #map_canvas {
 	height: 100%;
-	width: 80%;
 }
 
 #sidebar {
 	height:100%;
 	width: 20%;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	#map_canvas {
+		height: 80%;
+	}
 }

@@ -27,7 +27,13 @@ socket.on('test', function(data) {
     var newpath = path.getPath();
     newpath.push(new google.maps.LatLng(data.lat,data.lng));
     path.setPath(newpath);
+    document.getElementById("display-latlng").innerHTML = "Last lat/long: " + data.lat + " " + data.lng;
     console.log(data);
 
 });
 
+function clearpath() {
+    var newpath = [];
+    path.setPath(newpath);
+    console.log("Cleared path data");
+}

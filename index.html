@@ -2,7 +2,9 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 
@@ -16,9 +18,14 @@
     <script type="text/javascript" src="./js/script.js"></script>
   </head>
   <body onload="initialize()">
-    <div id="map_canvas"></div>
-    <div id="sidebar">
-      
+  <div class="row" id="container">
+    <div class="col-lg-10 col-md-8" id="map_canvas"></div>
+    <div class="col-lg-2 col-md-4">
+      <p id="display-latlng" class="text-center">Last lat/long: N/A</p>
+      <div class="text-center">
+        <button class="btn btn-default" onclick="clearpath()">Clear Path</button>
+      </div>
     </div>
+  </div>
   </body>
 </html>
