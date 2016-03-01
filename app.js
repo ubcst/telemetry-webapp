@@ -1,9 +1,12 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
+
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 var bodyParser = require('body-parser');
+
 app.use( bodyParser.json() );
+app.use(express.static('public'));
 
 app.get('/', function (req, res) {
   res.sendfile('index.html');
@@ -21,4 +24,7 @@ app.post('/', function (req, res) {
 
 io.on('connection', function(socket){
   console.log('a user connected');
+  socket.on('disconnect', function(){
+  	console.log('a user disconnected');
+  });
 });
