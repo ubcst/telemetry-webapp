@@ -1,0 +1,35 @@
+{
+  "name": "telemetry-webapp",
+  "version": "1.0.0",
+  "description": "UBCST telemetry webapp for visualizing GPS data",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "nodemon": "^1.9.1",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ubcst/telemetry-webapp.git"
+  },
+  "keywords": [
+    "telemetry",
+    "GPS",
+    "googlemaps",
+    "google",
+    "maps",
+    "supermileage",
+    "UBCST"
+  ],
+  "author": "Derek Chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ubcst/telemetry-webapp/issues"
+  },
+  "homepage": "https://github.com/ubcst/telemetry-webapp#readme"
+}
