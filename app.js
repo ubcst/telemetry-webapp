@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var fs = require('fs');
 
+var logData = {};
+
 app.use( bodyParser.json() );
 app.use(express.static('public'));
 
@@ -24,6 +26,18 @@ app.post('/', function (req, res) {
 	io.sockets.emit('test',req.body);
 	console.log(req.body);
 });
+
+function readLogs() {
+	var filepath = path.join(__dirname,'logs');
+	var filenames = fs.readdirSync(filepath);
+	console.log(filenames);
+	logData = {};
+	filenames.forEach(function(filename) {
+		console.log(filename);
+		logData[filename] = fs.readFileSync(filepath+'\\'+filename,'utf-8');
+		console.log(logData[filename]);
+	});
+}
 
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -43,6 +57,10 @@ io.on('connection', function(socket){
 		    }
 		    console.log('File was saved');
 		});
+	});
+
+	socket.on('loadLogs', function() {
+		readLogs();
 	});
 });
 

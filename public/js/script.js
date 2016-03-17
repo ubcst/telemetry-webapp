@@ -52,3 +52,8 @@ function savepath() {
     socket.emit('writelog',{pathstring});
     console.log("Trying to write path to log file");
 }
+
+function loadpath() {
+    console.log("Test load log");
+    socket.emit('loadLogs');
+}
