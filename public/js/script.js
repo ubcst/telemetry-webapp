@@ -33,12 +33,17 @@ function initialize() {
 }
 
 var socket = io();
-socket.on('test', function(data) {
+socket.on('newPoint', function(data) {
     var newpath = polyline.getPath();
     newpath.push(new google.maps.LatLng(data.lat,data.lng));
     polyline.setPath(newpath);
     document.getElementById("display-latlng").innerHTML = "Last lat/long: " + data.lat + " " + data.lng;
     console.log(data);
+});
+
+socket.on('newPath', function(data) {
+    var newpath = google.maps.geometry.encoding.decodePath(data.points);
+    polyline.setPath(newpath);
 });
 
 function clearpath() {
@@ -48,12 +53,12 @@ function clearpath() {
 }
 
 function savepath() {
-    var pathstring = polyline.getPath().getArray().toString();
-    socket.emit('writelog',{pathstring});
-    console.log("Trying to write path to log file");
+    var encodedpath = google.maps.geometry.encoding.encodePath(polyline.getPath());
+    socket.emit('writeLog',{path: encodedpath});
+    console.log("Trying to write encoded path to log file");
 }
 
 function loadpath() {
-    console.log("Test load log");
+    console.log("Ask server to send log");
     socket.emit('loadLogs');
 }

@@ -23,7 +23,7 @@ http.listen(3000, function () {
 
 app.post('/', function (req, res) {
 	res.send('Got a POST request');
-	io.sockets.emit('test',req.body);
+	io.sockets.emit('newPoint',req.body);
 	console.log(req.body);
 });
 
@@ -45,13 +45,13 @@ io.on('connection', function(socket){
 		console.log('a user disconnected');
 	});
 
-	socket.on('writelog', function(data){
+	socket.on('writeLog', function(data){
 		var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 		var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().replace(/:/g,"-").slice(0,-5);
 		var filename = localISOTime+'.txt';
 		console.log(filename);
 		var filePath = path.join(__dirname, 'logs', filename);
-		fs.writeFile(filePath, data.pathstring, function(err) {
+		fs.writeFile(filePath, data.path, function(err) {
 		    if(err) {
 		        return console.log('Unable to write file ' + err);
 		    }
@@ -61,6 +61,7 @@ io.on('connection', function(socket){
 
 	socket.on('loadLogs', function() {
 		readLogs();
+		socket.emit('newPath',{points: logData['2016-03-24T15-49-38.txt']});
 	});
 });
 
