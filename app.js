@@ -33,14 +33,19 @@ function readLogs() {
 	console.log(filenames);
 	logData = {};
 	filenames.forEach(function(filename) {
-		console.log(filename);
-		logData[filename] = fs.readFileSync(filepath+'\\'+filename,'utf-8');
-		console.log(logData[filename]);
+		if (filename != ".gitkeep") {
+			console.log(filename);
+			logData[filename] = fs.readFileSync(filepath+'\\'+filename,'utf-8');
+			console.log(logData[filename]);
+		}
 	});
 }
 
 io.on('connection', function(socket){
 	console.log('a user connected');
+	readLogs();
+	socket.emit('showPaths',{logData: logData});
+
 	socket.on('disconnect', function(){
 		console.log('a user disconnected');
 	});
@@ -57,11 +62,13 @@ io.on('connection', function(socket){
 		    }
 		    console.log('File was saved');
 		});
+		logData[filename] = data.path;
+		socket.emit('showPaths',{logData: logData});
 	});
 
-	socket.on('loadLogs', function() {
+	socket.on('loadLogs', function(data){
 		readLogs();
-		socket.emit('newPath',{points: logData['2016-03-24T15-49-38.txt']});
+		socket.emit('newPath',{points: logData[data.logfile]});
 	});
 });
 

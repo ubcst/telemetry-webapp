@@ -46,6 +46,31 @@ socket.on('newPath', function(data) {
     polyline.setPath(newpath);
 });
 
+socket.on('showPaths', function(data) {
+    var logFiles = data.logData;
+    var logsList = document.getElementById("logs");
+    console.log('Displaying stored paths')
+    logsList.innerHTML = '';
+    for (var logFile in logFiles) {
+        if (logFiles.hasOwnProperty(logFile)) {
+            var input = document.createElement("input");
+            input.type = "radio";
+            input.name = "logfile";
+            input.id = logFile;
+            input.value = logFile;
+            input.appendChild(document.createTextNode(logFile));
+            logsList.appendChild(input);
+
+            var label = document.createElement("label");
+            label.htmlFor = input.id;
+            label.innerHTML = logFile;
+            logsList.appendChild(label);
+
+            logsList.appendChild(document.createElement("br"));
+        }
+    }
+});
+
 function clearpath() {
     var newpath = [];
     polyline.setPath(newpath);
@@ -60,5 +85,14 @@ function savepath() {
 
 function loadpath() {
     console.log("Ask server to send log");
-    socket.emit('loadLogs');
+    var logfile = "xx";
+    var radios = document.getElementsByName('logfile');
+    for (var i=0; i<radios.length; i++) {
+        if ( radios[i].checked ) {
+            logfile = radios[i].value;
+            break;
+        }
+    }
+    console.log(logfile);
+    socket.emit('loadLogs', {logfile: logfile});
 }
