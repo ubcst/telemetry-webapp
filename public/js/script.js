@@ -71,6 +71,18 @@ socket.on('showPaths', function(data) {
     }
 });
 
+function getSelectedLog() {
+    var logfile = "xx";
+    var radios = document.getElementsByName('logfile');
+    for (var i=0; i<radios.length; i++) {
+        if ( radios[i].checked ) {
+            logfile = radios[i].value;
+            break;
+        }
+    }
+    return logfile;
+}
+
 function clearpath() {
     var newpath = [];
     polyline.setPath(newpath);
@@ -85,14 +97,12 @@ function savepath() {
 
 function loadpath() {
     console.log("Ask server to send log");
-    var logfile = "xx";
-    var radios = document.getElementsByName('logfile');
-    for (var i=0; i<radios.length; i++) {
-        if ( radios[i].checked ) {
-            logfile = radios[i].value;
-            break;
-        }
-    }
-    console.log(logfile);
+    var logfile = getSelectedLog();
     socket.emit('loadLogs', {logfile: logfile});
+}
+
+function deletepath() {
+    console.log("Ask server to delete log");
+    var logfile = getSelectedLog();
+    socket.emit('deleteLog', {logfile: logfile});
 }

@@ -35,7 +35,7 @@ function readLogs() {
 	filenames.forEach(function(filename) {
 		if (filename != ".gitkeep") {
 			console.log(filename);
-			logData[filename] = fs.readFileSync(filepath+'\\'+filename,'utf-8');
+			logData[filename] = fs.readFileSync(path.join(filepath,filename),'utf-8');
 			console.log(logData[filename]);
 		}
 	});
@@ -69,6 +69,18 @@ io.on('connection', function(socket){
 	socket.on('loadLogs', function(data){
 		readLogs();
 		socket.emit('newPath',{points: logData[data.logfile]});
+	});
+
+	socket.on('deleteLog', function(data) {
+		var filePath = path.join(__dirname, 'logs', data.logfile);
+		fs.unlink(filePath, function(err) {
+			if (err) {
+				return console.log('Unable to delete file ' + err);
+			}
+			console.log('File was deleted');
+		});
+		delete logData[data.logfile];
+		socket.emit('showPaths',{logData: logData});
 	});
 });
 
